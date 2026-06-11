@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScrapScan AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <div class="logo-icon">♻</div>
+    <div>
+      <h2>ScrapScan AI</h2>
+      <span>Detectá valor oculto en objetos usados</span>
+    </div>
+  </div>
+</header>
+
+<main class="hero">
+  <section class="hero-text">
+    <div class="badge">● IA para reciclaje inteligente</div>
+
+    <h1>
+      Convertí basura en <span>material útil</span>.
+    </h1>
+
+    <p>
+      Subí una foto de una heladera, lavarropas, celular, electrodoméstico o chatarra.
+      La IA detecta componentes recuperables, materiales y valor estimado.
+    </p>
+
+    <div class="upload-box">
+      <input type="file" id="imageInput" accept="image/*" hidden />
+
+      <button class="primary-btn" onclick="document.getElementById('imageInput').click()">
+        📸 Subir imagen
+      </button>
+
+      <button class="secondary-btn" onclick="analyzeImage()">
+        Analizar con IA →
+      </button>
+    </div>
+  </section>
+
+  <section class="preview-panel">
+    <div class="preview-header">
+      <span>Vista previa</span>
+      <div class="online-dot"></div>
+    </div>
+
+    <div class="image-preview" id="imagePreview">
+      <p>Tu imagen aparecerá acá</p>
+    </div>
+  </section>
+</main>
+
+<section class="results-section" id="resultsSection">
+  <h2>Resultado del análisis</h2>
+
+  <div id="loading" class="loading hidden">
+    Analizando materiales...
+  </div>
+
+  <div class="result-grid" id="resultGrid"></div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
