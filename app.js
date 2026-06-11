@@ -44,6 +44,7 @@ async function analyzeImage() {
     });
 
     const data = await response.json();
+    console.log("RESPUESTA API:", data);
 
     loading.classList.add("hidden");
 
