@@ -1,44 +1,60 @@
 export default async function handler(req, res) {
-
   if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Método no permitido"
-    });
+    return res.status(405).json({ error: "Método no permitido" });
   }
 
   try {
-
     const { imageBase64 } = req.body;
 
     const prompt = `
-Analiza esta imagen.
+Actuá como un experto en reciclaje, chatarra, electrodomésticos usados, electrónica usada y reventa de componentes en Argentina.
 
-Responde EXCLUSIVAMENTE en JSON.
+Analizá el objeto de la imagen aunque la foto no sea perfecta.
+Si no estás 100% seguro, estimá usando pistas visuales.
+No digas "no puedo". Respondé con lo más probable.
 
-Formato:
+Respondé EXCLUSIVAMENTE en JSON válido.
+
+Formato exacto:
 
 {
   "object": "",
-  "materials": "",
-  "components": "",
-  "value": "",
-  "recovery": "",
-  "recommendation": ""
+  "confidence": "",
+  "price": "",
+  "rescue": "",
+  "action": "",
+  "nextPhoto": ""
 }
 
-Debes:
+Reglas:
+- object = qué objeto parece ser.
+- confidence = Alta, Media o Baja.
+- price = valor estimado en pesos argentinos.
+- rescue = cosas valiosas para rescatar, en una frase corta.
+- action = qué conviene hacer, simple y directo.
+- nextPhoto = qué foto debería sacar para mejorar el análisis.
 
-- Identificar el objeto.
-- Detectar materiales recuperables.
-- Detectar componentes útiles.
-- Estimar valor recuperable.
-- Estimar porcentaje de recuperación.
-- Recomendar qué hacer con él.
+No uses texto técnico largo.
+No expliques de más.
+No uses euros ni dólares.
+No escribas markdown.
+No agregues texto fuera del JSON.
+
+Ejemplo:
+
+{
+  "object": "Heladera antigua",
+  "confidence": "Alta",
+  "price": "$25.000 - $60.000",
+  "rescue": "Compresor, cobre, aluminio, cables y chapa.",
+  "action": "No la tires. Conviene venderla entera o desarmarla por partes.",
+  "nextPhoto": "Sacá una foto de atrás donde se vea el motor o compresor."
+}
 `;
 
     const response = await fetch(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
-      process.env.GEMINI_API_KEY,
+        process.env.GEMINI_API_KEY,
       {
         method: "POST",
         headers: {
@@ -48,9 +64,7 @@ Debes:
           contents: [
             {
               parts: [
-                {
-                  text: prompt
-                },
+                { text: prompt },
                 {
                   inline_data: {
                     mime_type: "image/jpeg",
@@ -74,10 +88,8 @@ Debes:
     });
 
   } catch (error) {
-
     res.status(500).json({
       error: error.message
     });
-
   }
 }

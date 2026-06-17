@@ -50,7 +50,6 @@ async function analyzeImage() {
 
     if (!data.result) {
       alert("No se pudo obtener un análisis.");
-      console.log(data);
       return;
     }
 
@@ -62,10 +61,11 @@ async function analyzeImage() {
     const result = JSON.parse(cleanText);
 
     renderResults(result);
+
   } catch (error) {
     loading.classList.add("hidden");
-    alert("Error analizando imagen.");
     console.error(error);
+    alert("Error analizando imagen: " + error.message);
   }
 }
 
@@ -74,37 +74,31 @@ function renderResults(data) {
     <div class="result-card">
       <span>Objeto detectado</span>
       <h3>${data.object || "No detectado"}</h3>
-      <p>La IA identificó el tipo general del objeto.</p>
+      <p>Confianza: ${data.confidence || "Media"}</p>
     </div>
 
     <div class="result-card">
-      <span>Materiales útiles</span>
-      <h3>${data.materials || "Sin datos"}</h3>
-      <p>Materiales potencialmente recuperables.</p>
+      <span>💰 Precio estimado</span>
+      <h3>${data.price || "Sin estimación"}</h3>
+      <p>Valor aproximado recuperable en Argentina.</p>
     </div>
 
     <div class="result-card">
-      <span>Componentes</span>
-      <h3>${data.components || "Sin datos"}</h3>
-      <p>Partes que podrían tener valor para reciclaje.</p>
+      <span>🔧 Cosas a rescatar</span>
+      <h3>${data.rescue || "Sin datos"}</h3>
+      <p>Partes o materiales que podrían tener valor.</p>
     </div>
 
     <div class="result-card">
-      <span>Valor estimado</span>
-      <h3>${data.value || "Sin estimación"}</h3>
-      <p>Estimación inicial según materiales detectados.</p>
+      <span>🚀 Qué hacer</span>
+      <h3>${data.action || "Sin recomendación"}</h3>
+      <p>Decisión rápida según el análisis.</p>
     </div>
 
     <div class="result-card">
-      <span>Recuperación</span>
-      <h3>${data.recovery || "Sin datos"}</h3>
-      <p>Porcentaje aproximado de material aprovechable.</p>
-    </div>
-
-    <div class="result-card">
-      <span>Recomendación</span>
-      <h3>♻️ Reciclar</h3>
-      <p>${data.recommendation || "Separar materiales y evaluar componentes útiles."}</p>
+      <span>📸 Mejor foto</span>
+      <h3>${data.nextPhoto || "Foto clara del objeto completo."}</h3>
+      <p>Consejo para que la IA estime mejor.</p>
     </div>
   `;
 }
